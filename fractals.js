@@ -169,3 +169,6 @@ function canvasClicked2() {
 		calculateImage();
 	}
 }
+
+// start on page load
+startButtonPressed();
