@@ -6,6 +6,7 @@ var height = canvas.height;
 var xMinEntry = document.getElementById("xmin");
 var xMaxEntry = document.getElementById("xmax");
 var yMinEntry = document.getElementById("ymin");
+var yMaxEntry = document.getElementById("ymax");
 var canvasWidthEntry = document.getElementById("canvasWidth");
 
 //var id = context.createImageData(1, 1);
@@ -59,20 +60,25 @@ function calculateImage() {
 	var xMin = parseFloat(xMinEntry.value); // why is a number input field's value a string?
 	var xMax = parseFloat(xMaxEntry.value);
 	var yMin = parseFloat(yMinEntry.value);
-
-	var canvasWidth = parseInt(canvasWidthEntry.value) || 2000;
-	if (canvasWidth !== width) {
-		canvas.width = canvasWidth;
-		canvas.height = canvasWidth;
-		width = canvas.width;
-		height = canvas.height;
-	}
+	var yMax = parseFloat(yMaxEntry.value);
 
 	if (xMax < xMin) {
 		xMax = xMin + 1;
 	}
+	if (yMax < yMin) {
+		yMax = yMin + 1;
+	}
 
-	console.log(xMin, xMax, yMin);
+	var canvasWidth = parseInt(canvasWidthEntry.value) || 2000;
+	if (canvasWidth !== width) {
+		canvas.width = canvasWidth;
+		width = canvas.width;
+	}
+
+	canvas.height = width * (yMax - yMin) / (xMax - xMin);
+	height = canvas.height;
+
+	//console.log(xMin, xMax, yMin);
 
 	
 	var col = 0;
@@ -86,7 +92,7 @@ function calculateImage() {
 				//var c_re = g_midpoint_x - g_range_x/2 + col*g_range_x/width; //(x_offset + col - width/2) / width * 4 / zoomX; //(col - width/2 + x_offset) / width / zoomX * 4; //(x_offset+(col-width/2))/(width*zoom);
 				//var c_im = g_midpoint_y - g_range_y/2 + row*g_range_y/height; //(y_offset + row - height/2) / height * 4 / zoomX; //(y_offset+(row-height/2))/(width*zoom);
 				var c_re = xMin + col/width * (xMax - xMin);
-				var c_im = yMin + row/height * (xMax - xMin);
+				var c_im = yMin + row/height * (yMax - yMin);
 				var x = 0;
 				var y = 0;
 				var iteration = 0;
