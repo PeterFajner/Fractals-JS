@@ -1,6 +1,13 @@
 <head>
+	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script>
+		$(function() {
+			$("#header").load("https://peterfajner.github.io/header.html");
+		});
+	</script>
 </head>
 <body>
+	<div id="header"></div>
 	canvas width: <input type="number" id="canvasWidth" value="2000" step="100">
 	<p>
 	x min: <input type="number" id="xmin" value="-2" step="any">
