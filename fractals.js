@@ -3,6 +3,10 @@ var context = canvas.getContext("2d");
 var width = canvas.width;
 var height = canvas.height;
 
+var xMinEntry = document.getElementById("xmin");
+var xMaxEntry = document.getElementById("xmax");
+var yMinEntry = document.getElementById("ymin");
+
 //var id = context.createImageData(1, 1);
 //var data = id.data;
 var data = context.getImageData(0, 0, width, height);
@@ -22,7 +26,16 @@ var previous_click_y = 0;
 
 var zoomConstant = 4;
 
-canvas.addEventListener("mousedown", canvasClicked, false);
+var zoomX = 1;
+var zoomY = 1;
+
+var g_midpoint_x = 0;
+var g_midpoint_y = 0;
+
+var g_range_x = 4;
+var g_range_y = 4;
+
+//canvas.addEventListener("mousedown", canvasClicked2, false);
 
 function drawPixel(col, row, colour) {
 	/*var index = (col + row * width) * 4;
@@ -41,6 +54,7 @@ function drawPixel(col, row, colour) {
 }
 
 function calculateImage() {
+	
 	var col = 0;
 	var outer = setInterval(function() {
 		if (col >= width) {
@@ -49,8 +63,8 @@ function calculateImage() {
 		else {
 			//console.log(col);
 			for (var row = 0; row < height; row++) {
-				var c_re = (x_offset+(col-width/2)/zoom)/(width);
-				var c_im = (y_offset+(row-height/2)/zoom)/(width);
+				var c_re = g_midpoint_x - g_range_x/2 + col*g_range_x/width; //(x_offset + col - width/2) / width * 4 / zoomX; //(col - width/2 + x_offset) / width / zoomX * 4; //(x_offset+(col-width/2))/(width*zoom);
+				var c_im = g_midpoint_y - g_range_y/2 + row*g_range_y/height; //(y_offset + row - height/2) / height * 4 / zoomX; //(y_offset+(row-height/2))/(width*zoom);
 				var x = 0;
 				var y = 0;
 				var iteration = 0;
@@ -60,26 +74,27 @@ function calculateImage() {
 					x = x_new;
 					iteration++;
 				}
-				//var scale = (1-Math.log(iteration)/Math.log(max)) * 255;
 				var scale = (iteration/max) * 360;
 				var colour = [scale,100,50];
-				//console.log(col, row, iteration, colour);
 				drawPixel(col, row, colour);
 			}
 			col++;
 		}
 	}, 1);
-	/*
-	for (var col = 0; col < width; col++) {
-		
-	}*/
+
 }
 
 function startButtonPressed() {
-	calculateImage();
 	x_offset = 0;
 	y_offset = 0;
 	zoom = defaultZoom;
+	zoomX = 1;
+	zoomY = 1;
+	g_midpoint_x = 0;
+	g_midpoint_y = 0;
+	g_range_x = 4;
+	g_range_y = 4;
+	calculateImage();
 }
 
 function canvasClicked() {
@@ -94,4 +109,35 @@ function canvasClicked() {
 	previous_click_y = click_y;
 	calculateImage();
 
+}
+
+var click1 = [];
+var click2 = [];
+
+var alreadyClicked = false;
+
+function canvasClicked2() {
+	if (!alreadyClicked) {
+		click1 = [event.pageX - canvas.offsetLeft, event.pageY - canvas.offsetTop];
+		alreadyClicked = true;
+	}
+	else if (alreadyClicked) {
+		click2 = [event.pageX - canvas.offsetLeft, event.pageY - canvas.offsetTop];
+		alreadyClicked = false;
+		var c_maxX = Math.max(click1[0], click2[0]);
+		var c_minX = Math.min(click1[0], click2[0]);
+		var c_maxY = Math.max(click1[1], click2[1]);
+		var c_minY = Math.min(click1[1], click2[1]);
+		var c_midX = c_maxX - c_minX;
+		var c_midY = c_maxY - c_minY;
+
+		g_midpoint_x = g_range_x * (c_midX / width - 0.5);
+		g_midpoint_y = g_range_y * (c_midY / height - 0.5);
+
+
+
+
+		//console.log([minX, maxX, minY, maxY], [x_offset, y_offset], [zoomX, zoomY]);
+		calculateImage();
+	}
 }
