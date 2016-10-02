@@ -1,23 +1,38 @@
 <head>
-	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script>
-		$(function() {
-			$("#header").load("https://peterfajner.github.io/header.html");
-		});
-	</script>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script>
+        $(function() {
+            $("#header").load("https://peterfajner.github.io/header.html");
+        });
+    </script>
 </head>
+
 <body>
-	<div id="header"></div>
-	canvas width: <input type="number" id="canvasWidth" value="2000" step="100">
-	<p>
-	x min: <input type="number" id="xmin" value="-2" step="any">
-	x max: <input type="number" id="xmax" value="2" step="any">
-	<p>
-	y min: <input type="number" id ="ymin" value="-2" step="any">
-	y max: <input type="number" id ="ymax" value="2" step="any">
-	<button type="button" id="start" onclick="startButtonPressed()">Start</button>
-	<p>
-	<!--<canvas id="canvas" style="width:50px; height:50px"></canvas>-->
-	<canvas id="canvas" width="4000" height="4000" border="2"></canvas>
-	<script src="fractals.js"></script>
+    <div id="header"></div>
+    canvas width: <input type="number" id="canvasWidth" value="2000" step="100">
+    <br> x min: <input type="number" id="xmin" value="-2" step="any"> x max: <input type="number" id="xmax" value="2" step="any">
+    <br> y min: <input type="number" id="ymin" value="-2" step="any"> y max: <input type="number" id="ymax" value="2" step="any">
+    <button type="button" id="start" onclick="startButtonPressed()">Start</button>
+    <br>
+    <!--<canvas id="canvas" style="width:50px; height:50px"></canvas>-->
+    <canvas id="canvas" width="4000" height="4000" border="2"></canvas>
+    <script src="fractals.js"></script>
+
+    <!-- Google Analytics -->
+    <script>
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-61043918-2', 'auto');
+        ga('send', 'pageview');
+    </script>
 </body>
